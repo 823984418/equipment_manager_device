@@ -12,10 +12,12 @@
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
 
+#include "Device_Info.h"
 #include "gpio.h"
 #include "http.h"
 #include "server_receive_transmit.h"
-#include "hlw8032.h"
+//#include "hlw8032.h"
+#include "im1281b.h"
 #include "event.h"
 
 /*
@@ -30,7 +32,8 @@
 //http组包宏，获取http接口参数
 #define WEB_SERVER          "ztuser.ltd"              
 #define WEB_PORT            "80"
-#define WEB_URL             "/equipment_server/device1/link?"
+//#define WEB_URL             "/equipment_server/device1/link?"
+#define WEB_URL             "/equipment_server/deviceLink?"
 #define WEB_uuid            "1"
 #define WEB_password        "0"
 
@@ -48,10 +51,17 @@ static char REQUEST[1024];
 
 static const char *HTTP_TAG = "http_task";
 
+char mid_buf[1024];
+
 void http_create_request()
 {
+    char elec_data[256];
     //sprintf(REQUEST , "GET ""/v3/weather/now.json?key=""g3egns3yk2ahzb0p""&location=""suzhou""&language=""en"" HTTP/1.1\r\n""Host: ""api.thinkpage.cn""Connection: close\r\n""");
-    sprintf(REQUEST , "GET "WEB_URL"uuid="WEB_uuid"&password="WEB_password"&relay=%d&vlotage=%.2f&current=%.2f&power=%.2f&electricity=%.2f HTTP/1.1\r\n""Host: "WEB_SERVER"\r\n""\r\n" , relay_state , hlw8032_rec->voltage , hlw8032_rec->current , hlw8032_rec->power , hlw8032_rec->power);
+    //sprintf(REQUEST , "GET "WEB_URL"uuid="WEB_uuid"&password="WEB_password"&relay=%d&vlotage=%.2f&current=%.2f&power=%.2f&electricity=%.2f HTTP/1.1\r\n""Host: "WEB_SERVER"\r\n""\r\n" , relay_state , hlw8032_rec->voltage , hlw8032_rec->current , hlw8032_rec->power , hlw8032_rec->power);
+    
+    //sprintf(elec_data , "R%d_U%.2f_I%.2f_P%.2f_E%.2f" , relay_state , im1281b_data->voltage , im1281b_data->current , im1281b_data->power , im1281b_data->electricity);
+    sprintf(elec_data , "%d_%.2f_%.2f_%.2f_%.2f" , relay_state , im1281b_data->voltage , im1281b_data->current , im1281b_data->power , im1281b_data->electricity);
+    sprintf(REQUEST , "GET "WEB_URL"uuid="DEV_UUID"&password="DEV_PSW"&state=%s ""HTTP/1.1\r\n""Host: "WEB_SERVER"\r\n""\r\n" , elec_data);
     //sprintf(REQUEST , "GET ""Host: ""ztuser.ltd""\r\n""\r\n");
     printf("%s\n",REQUEST);
 }
@@ -66,7 +76,7 @@ void http_get_task(void *pvParameters)
     struct in_addr *addr;
     int s, r;
     char recv_buf[1024];
-    char mid_buf[1024];
+    
     int index;
     while(1) {
         
@@ -120,8 +130,8 @@ void http_get_task(void *pvParameters)
             strcat(mid_buf,recv_buf);
         } while(r > 0);
         //json解析
-        printf("http receive IS :\n");
-        printf("%s\n",mid_buf);
+        //printf("http receive IS :\n");
+        //printf("%s\n",mid_buf);
 
         http_rec = server_char_parse(mid_buf);
 

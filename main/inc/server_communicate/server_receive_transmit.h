@@ -4,6 +4,7 @@
 typedef struct
 {
     char code[5];
+    char state[5];
     char state_uuid[10];
     char state_local[10];
     char state_state[5];
@@ -12,6 +13,8 @@ typedef struct
     char state_start[20];
     char state_finish[20];
     char time[20];
+    char control[100];
+    char reserved[5];
 } server_receive_data_t;
 
 extern server_receive_data_t http_rec;

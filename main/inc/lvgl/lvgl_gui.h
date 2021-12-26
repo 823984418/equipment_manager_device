@@ -7,6 +7,7 @@ extern unsigned char srceen;
 
 LV_FONT_DECLARE(ziyuanyuanti_16);
 LV_FONT_DECLARE(ziyuanyuanti_24);
+LV_FONT_DECLARE(yumo_16);
 LV_IMG_DECLARE(logo_80);
 LV_IMG_DECLARE(logo_name_30);
 LV_IMG_DECLARE(login_phone_150);
@@ -15,8 +16,9 @@ LV_IMG_DECLARE(sw_on);
 LV_IMG_DECLARE(V_30);
 LV_IMG_DECLARE(A_30);
 LV_IMG_DECLARE(W_30);
-LV_IMG_DECLARE(headimg_50);
+LV_IMG_DECLARE(headimg_46);
 
+extern uint8_t headimg_46_map[4232];
 
 typedef struct
 {
@@ -36,6 +38,7 @@ typedef struct
     lv_obj_t *reservation_label2;
     lv_obj_t *reservation_img_head;
     lv_obj_t *reservation_label_name;
+    lv_obj_t *reservation_label_ID;
     lv_obj_t *user_screen;
     lv_obj_t *user_tabview;
     lv_obj_t *user_tabview_tab1;
@@ -75,5 +78,7 @@ void lvgl_gui_login_screen();
 void lvgl_gui_reservation_screen();
 void lvgl_gui_user_screen();
 void lvgl_gui_start();
+
+void init_img46();
 
 #endif // _LVGL_GUI_H_

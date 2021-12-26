@@ -49,6 +49,7 @@ esp_err_t wifi_event_handler(void* arg, esp_event_base_t event_base,int32_t even
                 {
                     Device_Event_uninit();
                     http_task_uninit();
+                    printf("wifi disconnect , all task uninit\n");
                 }
                 wifi_connected_bit = 0;
                 if (retry_num < 10)  /* WiFi重连次数小于10 */
@@ -97,11 +98,14 @@ void wifi_init()
     ESP_ERROR_CHECK(esp_event_loop_create_default());    
 
     /* 创建一个默认的WIFI-STA网络接口，如果初始化错误，此API将中止。*/
-    esp_netif_t *wifi_sta=esp_netif_create_default_wifi_sta();
+    esp_netif_t *wifi_sta = esp_netif_create_default_wifi_sta();
+
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();//设置默认的wifi栈参数
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));    //初始化WiFi Alloc资源为WiFi驱动，如WiFi控制结构，RX / TX缓冲区，WiFi NVS结构等，此WiFi也启动WiFi任务。
     
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));//设置WIFI模式
+
     //ESP_ERROR_CHECK(esp_event_loop_init(wifi_event_handler, NULL));//创建事件的任务
     /* 将事件处理程序注册到系统默认事件循环，分别是WiFi事件和IP地址事件 */
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL));
@@ -118,9 +122,12 @@ void wifi_init()
 
     esp_netif_set_hostname(wifi_sta, WIFI_HOST_NAME);//接入点设备名更变
 
-    ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
+    //printf("ERROR:%s\n" , esp_err_to_name(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config)));
+
+    //printf("ERROR:%d\n" , ESP_ERR_WIFI_NOT_INIT);
+    //esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config);
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));// Set the WiFi API configuration storage type
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));//设置WIFI模式
+    ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 
     //xTaskCreate(&wifi_task, "wifi_task", 2048, NULL, 15, NULL);//创建任务

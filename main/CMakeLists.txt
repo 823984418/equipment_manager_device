@@ -1,6 +1,6 @@
 set(COMPONENT_SRCDIRS   src  
                         src/hardware
-                        src/hlw8032
+                        src/IM1281B
                         src/wifi
                         src/http
                         src/lvgl
@@ -13,7 +13,7 @@ set(COMPONENT_SRCDIRS   src
 set(COMPONENT_ADD_INCLUDEDIRS 
                         inc 
                         inc/hardware
-                        inc/hlw8032
+                        inc/IM1281B
                         inc/wifi
                         inc/http
                         inc/lvgl

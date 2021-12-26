@@ -14,13 +14,13 @@ void lvgl_gui_login_screen()
     srceen = 0;
     //字体风格
     static lv_style_t font_16_style;
-    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &ziyuanyuanti_16);
+    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &yumo_16);
 
     //创建登录屏幕
     lvgl_gui->login_screen = lv_obj_create(NULL, NULL);
 
     //二维码
-    const char * data = LAB_DEVICE_ID;
+    const char * data = "https://mp.weixin.qq.com/a/~md70breAAFuM8Br_a7D8zA~~";
     lvgl_gui->login_qr = lv_qrcode_create(lvgl_gui->login_screen , 100 , lv_color_hex3(0x33f) , lv_color_hex3(0xeef));
     lv_qrcode_update(lvgl_gui->login_qr , data , strlen(data));
     lv_obj_align(lvgl_gui->login_qr , NULL , LV_ALIGN_CENTER , -55 , 25);
@@ -71,7 +71,7 @@ void lvgl_gui_reservation_screen()
 {
     //字体风格
     static lv_style_t font_16_style;
-    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &ziyuanyuanti_16);
+    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &yumo_16);
 
     static lv_style_t font_24_style;
     lv_style_set_text_font(&font_24_style, LV_STATE_DEFAULT, &ziyuanyuanti_24);
@@ -102,15 +102,23 @@ void lvgl_gui_reservation_screen()
     lv_label_set_text(lvgl_gui->reservation_label2 , "请在微信小程序上开启使用");
 
     //预约人头像
-    lvgl_gui->reservation_img_head = lv_img_create(lvgl_gui->reservation_screen , NULL);
-    lv_img_set_src(lvgl_gui->reservation_img_head , &headimg_50);
-    lv_obj_align(lvgl_gui->reservation_img_head , NULL , LV_ALIGN_CENTER , 0 , 30);
+    // lvgl_gui->reservation_img_head = lv_img_create(lvgl_gui->reservation_screen , NULL);
+    // lv_img_set_src(lvgl_gui->reservation_img_head , &headimg_46);
+    // lv_obj_align(lvgl_gui->reservation_img_head , NULL , LV_ALIGN_CENTER , 0 , 30);
 
     //预约人名字
     lvgl_gui->reservation_label_name = lv_label_create(lvgl_gui->reservation_screen , NULL);
     lv_obj_add_style(lvgl_gui->reservation_label_name , LV_LABEL_PART_MAIN , &font_16_style);
-    lv_obj_align(lvgl_gui->reservation_label_name , NULL , LV_ALIGN_CENTER , 0 , 65);
+    lv_obj_align(lvgl_gui->reservation_label_name , NULL , LV_ALIGN_CENTER , 0 , 10);
+    //lv_label_set_align(lvgl_gui->reservation_label_name , LV_LABEL_ALIGN_CENTER);
     lv_label_set_text(lvgl_gui->reservation_label_name , http_rec.state_user);
+
+    //预约人学号
+    lvgl_gui->reservation_label_ID = lv_label_create(lvgl_gui->reservation_screen , NULL);
+    lv_obj_add_style(lvgl_gui->reservation_label_ID , LV_LABEL_PART_MAIN , &font_16_style);
+    lv_obj_align(lvgl_gui->reservation_label_ID , NULL , LV_ALIGN_CENTER , -17 , 30);
+    //lv_label_set_align(lvgl_gui->reservation_label_ID , LV_LABEL_ALIGN_LEFT);
+    lv_label_set_text(lvgl_gui->reservation_label_ID , http_rec.state_uuid);
 
     //全局通知
     lvgl_gui->all_label_notice = lv_label_create(lvgl_gui->reservation_screen , NULL);
@@ -127,7 +135,7 @@ void lvgl_gui_user_screen()
 
     //字体风格
     static lv_style_t font_16_style;
-    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &ziyuanyuanti_16);
+    lv_style_set_text_font(&font_16_style, LV_STATE_DEFAULT, &yumo_16);
 
     static lv_style_t lv_font_20_style;
     lv_style_set_text_font(&lv_font_20_style, LV_STATE_DEFAULT, &lv_font_montserrat_20);
@@ -263,27 +271,27 @@ void lvgl_gui_user_screen()
     //用户信息 标签3
         //头像
     lvgl_gui->user_tabview_tab3_img_head = lv_img_create(lvgl_gui->user_tabview_tab3 , NULL);
-    lv_img_set_src(lvgl_gui->user_tabview_tab3_img_head , &headimg_50);
-    lv_img_set_zoom(lvgl_gui->user_tabview_tab3_img_head , 256 * 1.6);
-    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_img_head , 230 , 25);
+    lv_img_set_src(lvgl_gui->user_tabview_tab3_img_head , &headimg_46);
+    lv_img_set_zoom(lvgl_gui->user_tabview_tab3_img_head , 256 * 2);
+    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_img_head , 220 , 50);
         //用户姓名
     lvgl_gui->user_tabview_tab3_label_username = lv_label_create(lvgl_gui->user_tabview_tab3 , NULL);
-    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_username , LV_LABEL_PART_MAIN , &font_24_style);
+    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_username , LV_LABEL_PART_MAIN , &font_16_style);
     lv_label_set_text(lvgl_gui->user_tabview_tab3_label_username , "姓名：");
-    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_username , 10 , 10);
+    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_username , 10 , 15);
     lvgl_gui->user_tabview_tab3_label_username_value = lv_label_create(lvgl_gui->user_tabview_tab3 , NULL);
     lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_username_value , LV_LABEL_PART_MAIN , &font_16_style);
     lv_label_set_text(lvgl_gui->user_tabview_tab3_label_username_value , http_rec.state_user);
-    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_username_value , 60 , 10);
+    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_username_value , 50 , 15);
         //用户学号
     lvgl_gui->user_tabview_tab3_label_ID = lv_label_create(lvgl_gui->user_tabview_tab3 , NULL);
-    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_ID , LV_LABEL_PART_MAIN , &font_24_style);
+    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_ID , LV_LABEL_PART_MAIN , &font_16_style);
     lv_label_set_text(lvgl_gui->user_tabview_tab3_label_ID , "学号：");
     lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_ID , 10 , 40);
     lvgl_gui->user_tabview_tab3_label_ID_value = lv_label_create(lvgl_gui->user_tabview_tab3 , NULL);
-    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_ID_value , LV_LABEL_PART_MAIN , &font_24_style);
+    lv_obj_add_style(lvgl_gui->user_tabview_tab3_label_ID_value , LV_LABEL_PART_MAIN , &font_16_style);
     lv_label_set_text(lvgl_gui->user_tabview_tab3_label_ID_value , http_rec.state_uuid);
-    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_ID_value , 60 , 40);
+    lv_obj_set_pos(lvgl_gui->user_tabview_tab3_label_ID_value , 50 , 40);
     
     //全局通知
     lvgl_gui->all_label_notice = lv_label_create(lvgl_gui->user_screen , NULL);

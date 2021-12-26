@@ -10,13 +10,17 @@
 /**解析服务器发来的json**/
 server_receive_data_t server_char_parse( char * json_char)
 {   
-    server_receive_data_t server_data;
+    char state_bit[10]; 
+
+    server_receive_data_t server_data = {0};
 
     cJSON * root = NULL;
     cJSON * next = NULL;
     cJSON * item = NULL;
 
     char * index = strchr(json_char , '{');
+
+    
     //strcpy(json_char , index);
     //printf("%s\n" , index);
 
@@ -29,29 +33,96 @@ server_receive_data_t server_char_parse( char * json_char)
     else
     {
         printf("cJSON is:\r\n%s\n", cJSON_PrintUnformatted(root)); //无格式方式打印json
-
-        /**获取每一个键值并存入对应的结构体变量**/
-
+        
+        item = cJSON_GetObjectItem(root, "time");
+        sprintf(server_data.time , "%s" , cJSON_Print(item));
         item = cJSON_GetObjectItem(root, "code");
         sprintf(server_data.code , "%s" , cJSON_Print(item));
-        next = cJSON_GetObjectItem(root , "state");
-        item = cJSON_GetObjectItem(next , "uuid");
-        sprintf(server_data.state_uuid , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "local");
-        sprintf(server_data.state_local , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "state");
-        sprintf(server_data.state_state , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "last");
-        sprintf(server_data.state_last , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "user");
-        sprintf(server_data.state_user , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "start");
-        sprintf(server_data.state_start , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(next , "finish");
-        sprintf(server_data.state_finish , "%s" , cJSON_Print(item));
-        item = cJSON_GetObjectItem(root, "time");
-        sprintf(server_data.code , "%s" , cJSON_Print(item));
+        item = cJSON_GetObjectItem(root, "state");
+        sprintf(server_data.state , "%s" , cJSON_Print(item));   
+
+        if(strcmp(server_data.state , "0") == 0)
+        {
+            item = cJSON_GetObjectItem(root, "reserved");
+            sprintf(server_data.reserved , "%s" , cJSON_Print(item)); 
+
+            if(strcmp(server_data.reserved , "0") == 0)
+            {
+                sprintf(server_data.state_state , "0");  
+            }
+            else if(strcmp(server_data.reserved , "1") == 0)
+            {
+                sprintf(server_data.state_state , "1");
+                item = cJSON_GetObjectItem(root, "userAccount");
+                sprintf(server_data.state_uuid , "%s" , item->valuestring);
+                item = cJSON_GetObjectItem(root, "userName");
+                sprintf(server_data.state_user , "%s" , item->valuestring); 
+            }
+        }
+        else if(strcmp(server_data.state , "1") == 0)
+        {
+            item = cJSON_GetObjectItem(root, "control");
+            sprintf(server_data.control , "%s" , cJSON_Print(item));
+            item = cJSON_GetObjectItem(root, "userAccount");
+            //sprintf(server_data.state_uuid , "%s" , cJSON_Print(item));
+            sprintf(server_data.state_uuid , "%s" , item->valuestring);
+            item = cJSON_GetObjectItem(root, "userName");
+            //sprintf(server_data.state_user , "%s" , cJSON_Print(item));  
+            sprintf(server_data.state_user , "%s" , item->valuestring); 
+            sprintf(server_data.state_state , "2");
+        }
+
+
+        // /**获取每一个键值并存入对应的结构体变量**/
+        // item = cJSON_GetObjectItem(root, "state");
+        // sprintf(state_bit , "%s" , cJSON_Print(item));
+
+        // if(strcmp(state_bit , "0") == 0)
+        // {
+        //     item = cJSON_GetObjectItem(root, "time");
+        //     sprintf(server_data.time , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "code");
+        //     sprintf(server_data.code , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "state");
+        //     sprintf(server_data.state_state , "%s" , cJSON_Print(item));         
+        // }
+        // else if(strcmp(state_bit , "1") == 0)
+        // {
+        //     item = cJSON_GetObjectItem(root, "time");
+        //     sprintf(server_data.time , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "code");
+        //     sprintf(server_data.code , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "state");
+        //     sprintf(server_data.state_state , "%s" , cJSON_Print(item)); 
+        //     item = cJSON_GetObjectItem(root, "control");
+        //     sprintf(server_data.control , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "userAccount");
+        //     sprintf(server_data.state_uuid , "%s" , cJSON_Print(item));
+        //     item = cJSON_GetObjectItem(root, "userName");
+        //     sprintf(server_data.state_user , "%s" , cJSON_Print(item));   
+        // }
+
+        // item = cJSON_GetObjectItem(root, "code");
+        // sprintf(server_data.code , "%s" , cJSON_Print(item));
+        // next = cJSON_GetObjectItem(root , "state");
+        // item = cJSON_GetObjectItem(next , "uuid");
+        // sprintf(server_data.state_uuid , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "local");
+        // sprintf(server_data.state_local , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "state");
+        // sprintf(server_data.state_state , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "last");
+        // sprintf(server_data.state_last , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "user");
+        // sprintf(server_data.state_user , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "start");
+        // sprintf(server_data.state_start , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(next , "finish");
+        // sprintf(server_data.state_finish , "%s" , cJSON_Print(item));
+        // item = cJSON_GetObjectItem(root, "time");
+        // sprintf(server_data.code , "%s" , cJSON_Print(item));
     }
+
     return server_data;
 }
 

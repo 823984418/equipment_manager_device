@@ -15,7 +15,7 @@ void uart1_init()
     uart_config_t uart_config = {
         .baud_rate = 4800,                      //设置波特率
         .data_bits = UART_DATA_8_BITS,          //数据长度
-        .parity    = UART_PARITY_EVEN,          //奇偶校验
+        .parity    = UART_PARITY_DISABLE,//UART_PARITY_EVEN,          //奇偶校验
         .stop_bits = UART_STOP_BITS_1,          //停止位
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE  
     };
