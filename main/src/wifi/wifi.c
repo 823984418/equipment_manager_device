@@ -28,7 +28,7 @@ static wifi_config_t wifi_config = {
         }
     };
 
-esp_err_t wifi_event_handler(void* arg, esp_event_base_t event_base,int32_t event_id, void* event_data)
+void wifi_event_handler(void* arg, esp_event_base_t event_base,int32_t event_id, void* event_data)
 {
     static int retry_num = 0;           /* 记录wifi重连次数 */
     static int wifi_connected_bit = 0;
@@ -75,7 +75,6 @@ esp_err_t wifi_event_handler(void* arg, esp_event_base_t event_base,int32_t even
                 break;
         }
     }
-    return ESP_OK;
 }
 
 void wifi_task()
@@ -88,7 +87,7 @@ void wifi_task()
         memcpy(wifi_config.sta.password,WIFI_PASSWD,strlen(WIFI_PASSWD));
 
         ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA));
-        ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
+        ESP_ERROR_CHECK( esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
         ESP_ERROR_CHECK( esp_wifi_connect());
     }
 }
@@ -135,7 +134,7 @@ void wifi_init()
     //printf("ERROR:%d\n" , ESP_ERR_WIFI_NOT_INIT);
     //esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config);
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));// Set the WiFi API configuration storage type
-    ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 
     //xTaskCreate(&wifi_task, "wifi_task", 2048, NULL, 15, NULL);//创建任务
