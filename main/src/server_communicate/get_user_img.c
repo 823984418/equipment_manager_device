@@ -38,8 +38,6 @@ static char IMG_REQUEST[1024];
 // }
 
 char imgr[6000];
-//char * imgp;
-char * imgp;
 
 void http_get_user_img()
 {
@@ -60,8 +58,8 @@ void http_get_user_img()
     int index;
 
     //imgr = (char *)malloc(sizeof(char));
-    imgp = (char *)malloc(sizeof(4300));
-    char * pimgp = imgp;
+    //char * imgp;
+    char * imgp;
 
     //while(1) {
         
@@ -204,7 +202,6 @@ void http_get_user_img()
         //关闭socket，http是短连接
         close(s);
         printf("close ok\n");
-        free(pimgp);
         //free(imgr);
         //free(REQUEST);
         //延时一会
