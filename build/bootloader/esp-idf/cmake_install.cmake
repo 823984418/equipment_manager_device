@@ -1,8 +1,8 @@
-# Install script for directory: /root/esp-idf
+# Install script for directory: D:/esp32project/esp-idf/esp-idf-v4.4
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/bootloader")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,23 +32,32 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "TRUE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "C:/Users/HASEE/.espressif/tools/xtensa-esp32-elf/esp-2021r2-patch2-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-objdump.exe")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/root/project/LabMS/build/bootloader/esp-idf/esp32/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/hal/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/soc/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/xtensa/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/esp_common/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/esp_rom/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/log/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/partition_table/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/bootloader/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/micro-ecc/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/spi_flash/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/efuse/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/bootloader_support/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/esptool_py/cmake_install.cmake")
-  include("/root/project/LabMS/build/bootloader/esp-idf/main/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/newlib/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/hal/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/soc/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/micro-ecc/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/spi_flash/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/bootloader_support/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/efuse/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esp_system/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esp_hw_support/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/xtensa/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esp32/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esp_common/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esp_rom/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/log/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/esptool_py/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/partition_table/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/bootloader/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/freertos/cmake_install.cmake")
+  include("D:/esp32project/LabMS/build/bootloader/esp-idf/main/cmake_install.cmake")
 
 endif()
 

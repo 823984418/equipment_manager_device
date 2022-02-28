@@ -13,9 +13,9 @@ server_receive_data_t server_char_parse( char * json_char)
     char state_bit[10]; 
 
     server_receive_data_t server_data = {0};
-
+    char * pstr;
     cJSON * root = NULL;
-    cJSON * next = NULL;
+    //cJSON * next = NULL;
     cJSON * item = NULL;
 
     char * index = strchr(json_char , '{');
@@ -32,19 +32,24 @@ server_receive_data_t server_char_parse( char * json_char)
     }
     else
     {
-        printf("cJSON is:\r\n%s\n", cJSON_PrintUnformatted(root)); //无格式方式打印json
+        pstr = cJSON_PrintUnformatted(root);
+        printf("cJSON is:\r\n%s\n", pstr); //无格式方式打印json
+        free(pstr);
         
         item = cJSON_GetObjectItem(root, "time");
-        sprintf(server_data.time , "%s" , cJSON_Print(item));
+        sprintf(server_data.time , "%s" , item->valuestring);
+        
+
         item = cJSON_GetObjectItem(root, "code");
-        sprintf(server_data.code , "%s" , cJSON_Print(item));
+        sprintf(server_data.code , "%s" , item->valuestring);
+
         item = cJSON_GetObjectItem(root, "state");
-        sprintf(server_data.state , "%s" , cJSON_Print(item));   
+        sprintf(server_data.state , "%s" , item->valuestring);  
 
         if(strcmp(server_data.state , "0") == 0)
         {
             item = cJSON_GetObjectItem(root, "reserved");
-            sprintf(server_data.reserved , "%s" , cJSON_Print(item)); 
+            sprintf(server_data.reserved , "%s" , item->valuestring); 
 
             if(strcmp(server_data.reserved , "0") == 0)
             {
@@ -62,7 +67,7 @@ server_receive_data_t server_char_parse( char * json_char)
         else if(strcmp(server_data.state , "1") == 0)
         {
             item = cJSON_GetObjectItem(root, "control");
-            sprintf(server_data.control , "%s" , cJSON_Print(item));
+            sprintf(server_data.control , "%s" , item->valuestring);
             item = cJSON_GetObjectItem(root, "userAccount");
             //sprintf(server_data.state_uuid , "%s" , cJSON_Print(item));
             sprintf(server_data.state_uuid , "%s" , item->valuestring);
@@ -122,6 +127,8 @@ server_receive_data_t server_char_parse( char * json_char)
         // item = cJSON_GetObjectItem(root, "time");
         // sprintf(server_data.code , "%s" , cJSON_Print(item));
     }
+    if(root)
+        cJSON_Delete(root);
 
     return server_data;
 }

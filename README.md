@@ -36,5 +36,6 @@
 ```
 
 ## 注意事项
-* 在已安装LVGL图形库的情况下若编译报错，报找不到"lv_qrcode.h"的错误，请手动为你的LVGL库安装 [lv_lib_qrcode](https://github.com/lvgl/lv_lib_qrcode)  
+* ~~在已安装LVGL图形库的情况下若编译报错，报找不到"lv_qrcode.h"的错误，请手动为你的LVGL库安装 [lv_lib_qrcode](https://github.com/lvgl/lv_lib_qrcode)~~ 
+* 现已在仓库内包含LVGL源码库，理论上来说应该可以直接编译了
 * 目前存在亿点点BUG，请不要点炒饭谢谢
