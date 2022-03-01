@@ -34,7 +34,7 @@ server_receive_data_t server_char_parse( char * json_char)
     {
         pstr = cJSON_PrintUnformatted(root);
         printf("cJSON is:\r\n%s\n", pstr); //无格式方式打印json
-        free(pstr);
+        cJSON_free(pstr);
         
         item = cJSON_GetObjectItem(root, "time");
         sprintf(server_data.time , "%s" , item->valuestring);
