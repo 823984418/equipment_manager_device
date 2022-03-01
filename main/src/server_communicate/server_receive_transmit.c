@@ -36,20 +36,31 @@ server_receive_data_t server_char_parse( char * json_char)
         printf("cJSON is:\r\n%s\n", pstr); //无格式方式打印json
         free(pstr);
         
+        printf("ok\n");
+
         item = cJSON_GetObjectItem(root, "time");
-        sprintf(server_data.time , "%s" , item->valuestring);
+        pstr = cJSON_Print(item);
+        sprintf(server_data.time , "%s" , pstr);
+        free(pstr);
         
+        printf("ok1\n");
 
         item = cJSON_GetObjectItem(root, "code");
-        sprintf(server_data.code , "%s" , item->valuestring);
+        pstr = cJSON_Print(item);
+        sprintf(server_data.code , "%s" , pstr);
+        free(pstr);
 
         item = cJSON_GetObjectItem(root, "state");
-        sprintf(server_data.state , "%s" , item->valuestring);  
+        pstr = cJSON_Print(item);
+        sprintf(server_data.state , "%s" , pstr);  
+        free(pstr);
 
         if(strcmp(server_data.state , "0") == 0)
         {
             item = cJSON_GetObjectItem(root, "reserved");
-            sprintf(server_data.reserved , "%s" , item->valuestring); 
+            pstr = cJSON_Print(item);
+            sprintf(server_data.reserved , "%s" , pstr); 
+            free(pstr);
 
             if(strcmp(server_data.reserved , "0") == 0)
             {
