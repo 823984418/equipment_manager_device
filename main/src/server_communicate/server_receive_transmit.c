@@ -41,26 +41,26 @@ server_receive_data_t server_char_parse( char * json_char)
         item = cJSON_GetObjectItem(root, "time");
         pstr = cJSON_Print(item);
         sprintf(server_data.time , "%s" , pstr);
-        free(pstr);
+        cJSON_free(pstr);
         
         printf("ok1\n");
 
         item = cJSON_GetObjectItem(root, "code");
         pstr = cJSON_Print(item);
         sprintf(server_data.code , "%s" , pstr);
-        free(pstr);
+        cJSON_free(pstr);
 
         item = cJSON_GetObjectItem(root, "state");
         pstr = cJSON_Print(item);
-        sprintf(server_data.state , "%s" , pstr);  
-        free(pstr);
+        sprintf(server_data.state , "%s" , pstr);
+        cJSON_free(pstr);
 
         if(strcmp(server_data.state , "0") == 0)
         {
             item = cJSON_GetObjectItem(root, "reserved");
             pstr = cJSON_Print(item);
-            sprintf(server_data.reserved , "%s" , pstr); 
-            free(pstr);
+            sprintf(server_data.reserved , "%s" , pstr);
+            cJSON_free(pstr);
 
             if(strcmp(server_data.reserved , "0") == 0)
             {
