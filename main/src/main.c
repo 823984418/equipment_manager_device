@@ -28,8 +28,8 @@ void app_main(void)
     key_init();
     //hlw8032_init();
     im1281b_init();
-    wifi_init();
     lvgl_init();
+    wifi_init();
     //Device_Event_init();
 
     // while(1)

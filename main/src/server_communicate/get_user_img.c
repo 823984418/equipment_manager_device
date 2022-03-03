@@ -168,7 +168,11 @@ void http_get_user_img()
             //printf("get real 2img ok\n");
             //printf("imgbuf:%s\n" , imgp);
             //printf("print real 2img ok\n");
-            memcpy(headimg_46_map , imgp , 4232);
+
+            if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
+                memcpy(headimg_46_map , imgp , 4232);
+                xSemaphoreGive(xGuiSemaphore);
+            }
         }
 
         // recv_buf = strstr(imgr , "\r\n\r\n");

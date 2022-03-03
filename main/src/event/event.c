@@ -44,10 +44,12 @@ void Device_main_task()
             
             if(free_bit == 0)
             {
-                lv_obj_clean(lv_scr_act());
-                lvgl_gui_login_screen();
-                vTaskDelay(200 / portTICK_PERIOD_MS);
-                lv_scr_load(lvgl_gui->login_screen);
+                if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
+                    lv_obj_clean(lv_scr_act());
+                    lvgl_gui_login_screen();
+                    lv_scr_load(lvgl_gui->login_screen);
+                    xSemaphoreGive(xGuiSemaphore);
+                }
                 relay_off();
                 free_bit = 1;
             }
@@ -64,17 +66,19 @@ void Device_main_task()
             //     get_img_bit = 1;
             // }
 
-            if(reservation_bit == 0)
-            {
-                lv_obj_clean(lv_scr_act());
-                lvgl_gui_reservation_screen();
-                vTaskDelay(200 / portTICK_PERIOD_MS);
-                lv_scr_load(lvgl_gui->reservation_screen);
-                relay_off();
-                reservation_bit = 1;
+            if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
+                if(reservation_bit == 0)
+                {
+                    lv_obj_clean(lv_scr_act());
+                    lvgl_gui_reservation_screen();
+                    lv_scr_load(lvgl_gui->reservation_screen);
+                    relay_off();
+                    reservation_bit = 1;
+                }
+                lv_label_set_text(lvgl_gui->reservation_label_name , http_rec.state_user);
+                lv_label_set_text(lvgl_gui->reservation_label_ID , http_rec.state_uuid);
+                xSemaphoreGive(xGuiSemaphore);
             }
-            lv_label_set_text(lvgl_gui->reservation_label_name , http_rec.state_user);
-            lv_label_set_text(lvgl_gui->reservation_label_ID , http_rec.state_uuid);
         }
         else if(strcmp(http_rec.state_state , "2") == 0)        //用户正在使用
         {
@@ -88,28 +92,29 @@ void Device_main_task()
                 get_img_bit = 1;
             }
 
-            if(using_bit == 0)
-            {
-                lv_obj_clean(lv_scr_act());
-                lvgl_gui_user_screen();
-                vTaskDelay(200 / portTICK_PERIOD_MS);
-                lv_scr_load(lvgl_gui->user_screen);
-                using_bit = 1;
-            }
-
             sprintf(label_volt_str , "%.2fV" , im1281b_data->voltage);
             sprintf(label_curr_str , "%.2fA" , im1281b_data->current);
             sprintf(label_power_str , "%.1fW" , im1281b_data->power);
-            lv_label_set_text(lvgl_gui->user_tabview_tab2_label_volt_num , label_volt_str);
-            lv_label_set_text(lvgl_gui->user_tabview_tab2_label_curr_num , label_curr_str);
-            lv_label_set_text(lvgl_gui->user_tabview_tab2_label_power_num , label_power_str);
+            if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
+                if(using_bit == 0)
+                {
+                    lv_obj_clean(lv_scr_act());
+                    lvgl_gui_user_screen();
+                    vTaskDelay(200 / portTICK_PERIOD_MS);
+                    lv_scr_load(lvgl_gui->user_screen);
+                    using_bit = 1;
+                }
+                lv_label_set_text(lvgl_gui->user_tabview_tab2_label_volt_num , label_volt_str);
+                lv_label_set_text(lvgl_gui->user_tabview_tab2_label_curr_num , label_curr_str);
+                lv_label_set_text(lvgl_gui->user_tabview_tab2_label_power_num , label_power_str);
 
-            lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_volt , lvgl_gui->user_tabview_tab2_chart_series_volt , im1281b_data->voltage);
-            lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_curr , lvgl_gui->user_tabview_tab2_chart_series_curr , im1281b_data->current);
-            lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_power , lvgl_gui->user_tabview_tab2_chart_series_power , im1281b_data->power);
-            
-            lv_label_set_text(lvgl_gui->user_tabview_tab3_label_username_value , http_rec.state_user);
-            vTaskDelay(2000 / portTICK_PERIOD_MS);
+                lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_volt , lvgl_gui->user_tabview_tab2_chart_series_volt , im1281b_data->voltage);
+                lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_curr , lvgl_gui->user_tabview_tab2_chart_series_curr , im1281b_data->current);
+                lv_chart_set_next(lvgl_gui->user_tabview_tab2_chart_power , lvgl_gui->user_tabview_tab2_chart_series_power , im1281b_data->power);
+
+                lv_label_set_text(lvgl_gui->user_tabview_tab3_label_username_value , http_rec.state_user);
+                xSemaphoreGive(xGuiSemaphore);
+            }
 
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);

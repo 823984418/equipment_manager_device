@@ -3,6 +3,15 @@
 
 #include "lvgl.h"
 
+#include "freertos/semphr.h"
+
+/**
+ * Creates a semaphore to handle concurrent call to lvgl stuff
+ * If you wish to call *any* lvgl function from other threads/tasks
+ * you should lock on the very same semaphore!
+ */
+extern SemaphoreHandle_t xGuiSemaphore;
+
 extern unsigned char srceen;
 
 LV_FONT_DECLARE(ziyuanyuanti_16);
