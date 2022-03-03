@@ -3,6 +3,7 @@
 
 #include "lvgl.h"
 
+#include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 
 /**
