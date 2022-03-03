@@ -172,6 +172,8 @@ void http_get_user_img()
             if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
                 memcpy(headimg_46_map , imgp , 4232);
                 xSemaphoreGive(xGuiSemaphore);
+            } else {
+                printf("xSemaphoreTake xGuiSemaphore != pdTRUE");
             }
         }
 

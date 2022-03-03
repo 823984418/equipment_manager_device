@@ -49,6 +49,8 @@ void Device_main_task()
                     lvgl_gui_login_screen();
                     lv_scr_load(lvgl_gui->login_screen);
                     xSemaphoreGive(xGuiSemaphore);
+                } else {
+                    printf("xSemaphoreTake xGuiSemaphore != pdTRUE");
                 }
                 relay_off();
                 free_bit = 1;
@@ -78,6 +80,8 @@ void Device_main_task()
                 lv_label_set_text(lvgl_gui->reservation_label_name , http_rec.state_user);
                 lv_label_set_text(lvgl_gui->reservation_label_ID , http_rec.state_uuid);
                 xSemaphoreGive(xGuiSemaphore);
+            } else {
+                printf("xSemaphoreTake xGuiSemaphore != pdTRUE");
             }
         }
         else if(strcmp(http_rec.state_state , "2") == 0)        //用户正在使用
@@ -114,6 +118,8 @@ void Device_main_task()
 
                 lv_label_set_text(lvgl_gui->user_tabview_tab3_label_username_value , http_rec.state_user);
                 xSemaphoreGive(xGuiSemaphore);
+            } else {
+                printf("xSemaphoreTake xGuiSemaphore != pdTRUE");
             }
 
         }
